@@ -19,13 +19,28 @@ const initialTeams: Team[] = [
   { id: 6, name: "TEAM FINCA JUJURE (VEN)" },
 ];
 
-const initialGames: Game[] = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  team1Id: "",
-  score1: "",
-  team2Id: "",
-  score2: "",
-}));
+const initialGames: Game[] = [
+  // DÍA 1: Miércoles, 18 de marzo
+  { id: 1, team1Id: "2", score1: "", team2Id: "4", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "10:15" },
+  { id: 2, team1Id: "1", score1: "", team2Id: "6", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "13:15" },
+  { id: 3, team1Id: "3", score1: "", team2Id: "5", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "16:15" },
+  { id: 4, team1Id: "1", score1: "", team2Id: "5", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "21:00" },
+  // DÍA 2: Jueves, 19 de marzo
+  { id: 5, team1Id: "3", score1: "", team2Id: "6", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "10:15" },
+  { id: 6, team1Id: "2", score1: "", team2Id: "5", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "13:15" },
+  { id: 7, team1Id: "4", score1: "", team2Id: "1", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "16:15" },
+  { id: 8, team1Id: "3", score1: "", team2Id: "2", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "21:00" },
+  // DÍA 3: Viernes, 20 de marzo
+  { id: 9, team1Id: "5", score1: "", team2Id: "6", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "10:15" },
+  { id: 10, team1Id: "4", score1: "", team2Id: "3", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "13:15" },
+  { id: 11, team1Id: "2", score1: "", team2Id: "1", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "16:15" },
+  { id: 12, team1Id: "6", score1: "", team2Id: "4", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "21:00" },
+  // DÍA 4: Sábado, 21 de marzo
+  { id: 13, team1Id: "1", score1: "", team2Id: "3", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "12:00" },
+  { id: 14, team1Id: "6", score1: "", team2Id: "2", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "15:00" },
+  { id: 15, team1Id: "5", score1: "", team2Id: "4", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "18:00" },
+];
+
 
 const initialChampionshipGame: Game = {
   id: 1,

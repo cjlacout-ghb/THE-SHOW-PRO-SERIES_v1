@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Fragment } from "react";
 
 type ScheduleCardProps = {
   title: string;
@@ -36,6 +37,12 @@ export default function ScheduleCard({
   onGameChange,
   footer,
 }: ScheduleCardProps) {
+  const getTeamName = (teamId: string) => {
+    return teams.find((t) => String(t.id) === teamId)?.name || "Unknown Team";
+  };
+  
+  let lastDay: string | undefined = undefined;
+
   return (
     <Card>
       <CardHeader>
@@ -45,58 +52,49 @@ export default function ScheduleCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {games.map((game, index) => (
-          <div key={game.id} className="space-y-3">
-            <Label className="text-sm font-medium text-muted-foreground">
-              Game {index + 1}
-            </Label>
-            <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_min-content_2fr_1fr] gap-2 items-center">
-              <Select
-                value={game.team1Id}
-                onValueChange={(value) => onGameChange(game.id, "team1Id", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Team 1" />
-                </SelectTrigger>
-                <SelectContent>
-                  {teams.map((team) => (
-                    <SelectItem key={team.id} value={String(team.id)}>
-                      {team.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                placeholder="Score"
-                value={game.score1}
-                onChange={(e) => onGameChange(game.id, "score1", e.target.value)}
-              />
-              <span className="text-center text-muted-foreground font-semibold">VS</span>
-              <Select
-                value={game.team2Id}
-                onValueChange={(value) => onGameChange(game.id, "team2Id", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Team 2" />
-                </SelectTrigger>
-                <SelectContent>
-                  {teams.map((team) => (
-                    <SelectItem key={team.id} value={String(team.id)}>
-                      {team.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                placeholder="Score"
-                value={game.score2}
-                onChange={(e) => onGameChange(game.id, "score2", e.target.value)}
-              />
-            </div>
-          </div>
-        ))}
+        {games.map((game, index) => {
+          const showDay = game.day && game.day !== lastDay;
+          if (showDay) {
+            lastDay = game.day;
+          }
+          return (
+            <Fragment key={game.id}>
+              {showDay && <h3 className="font-bold text-lg pt-4">{game.day}</h3>}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Game {index + 1} {game.time && `/ ${game.time}`}
+                </Label>
+                <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_min-content_2fr_1fr] gap-2 items-center">
+                   <div className="p-2 text-sm text-center rounded-md bg-muted">
+                    {getTeamName(game.team1Id)}
+                  </div>
+                  <Input
+                    type="number"
+                    placeholder="Score"
+                    value={game.score1}
+                    onChange={(e) =>
+                      onGameChange(game.id, "score1", e.target.value)
+                    }
+                  />
+                  <span className="text-center text-muted-foreground font-semibold">
+                    VS
+                  </span>
+                   <div className="p-2 text-sm text-center rounded-md bg-muted">
+                    {getTeamName(game.team2Id)}
+                  </div>
+                  <Input
+                    type="number"
+                    placeholder="Score"
+                    value={game.score2}
+                    onChange={(e) =>
+                      onGameChange(game.id, "score2", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+            </Fragment>
+          );
+        })}
       </CardContent>
       {footer && <CardFooter>{footer}</CardFooter>}
     </Card>

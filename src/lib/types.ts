@@ -10,6 +10,8 @@ export type Game = {
   score1: string;
   team2Id: string;
   score2: string;
+  day?: string;
+  time?: string;
 };
 
 export type Standing = {

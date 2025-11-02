@@ -140,15 +140,82 @@ export default function Home() {
       standing.pct = gamesPlayed > 0 ? Math.round((standing.w / gamesPlayed) * 1000) : 0;
     });
 
-    newStandings.sort((a, b) => b.w - a.w || a.l - b.l || (b.rs - b.ra) - (a.rs - a.ra));
+    // Main sort by wins
+    newStandings.sort((a, b) => b.w - a.w);
 
-    const firstPlaceWins = newStandings.length > 0 ? newStandings[0].w : 0;
-    const firstPlaceLosses = newStandings.length > 0 ? newStandings[0].l : 0;
+    // Group teams by win count for tie-breaking
+    const groupedByWins: { [key: number]: (typeof newStandings) } = {};
+    newStandings.forEach(s => {
+      if (!groupedByWins[s.w]) {
+        groupedByWins[s.w] = [];
+      }
+      groupedByWins[s.w].push(s);
+    });
+
+    const sortedStandings: (typeof newStandings) = [];
+    Object.values(groupedByWins).reverse().forEach(group => {
+      if (group.length <= 1) {
+        sortedStandings.push(...group);
+        return;
+      }
+
+      // Tie-breaking logic for groups of 2 or more
+      group.sort((a, b) => {
+        const tiedTeamIds = group.map(s => s.teamId);
+        
+        // 1. Head-to-head record among tied teams
+        let winsA = 0;
+        let winsB = 0;
+        preliminaryGames.forEach(game => {
+          const gameTeamIds = [parseInt(game.team1Id), parseInt(game.team2Id)];
+          if (tiedTeamIds.includes(gameTeamIds[0]) && tiedTeamIds.includes(gameTeamIds[1])) {
+            const score1 = parseInt(game.score1);
+            const score2 = parseInt(game.score2);
+
+            if(game.team1Id === String(a.teamId) && game.team2Id === String(b.teamId)) {
+                if(score1 > score2) winsA++;
+                if(score2 > score1) winsB++;
+            } else if (game.team1Id === String(b.teamId) && game.team2Id === String(a.teamId)) {
+                if(score1 > score2) winsB++;
+                if(score2 > score1) winsA++;
+            }
+          }
+        });
+
+        if (winsA !== winsB) {
+          return winsB - winsA;
+        }
+
+        // 2. Team's Quality Balance (TQB) - Simplified as run differential for now
+        // TQB = (runs scored / innings at bat) – (runs allowed / innings on defence).
+        // Assuming 7 innings per game.
+        const gamesPlayedA = a.w + a.l;
+        const gamesPlayedB = b.w + b.l;
+        const inningsA = gamesPlayedA > 0 ? gamesPlayedA * 7 : 1;
+        const inningsB = gamesPlayedB > 0 ? gamesPlayedB * 7 : 1;
+        
+        const tqbA = (a.rs / inningsA) - (a.ra / inningsA);
+        const tqbB = (b.rs / inningsB) - (b.ra / inningsB);
+        
+        if (tqbA !== tqbB) {
+            return tqbB - tqbA;
+        }
+
+        // 3. ER-TQB, Batting Average, Coin Flip - not implemented yet
+        return 0;
+      });
+
+      sortedStandings.push(...group);
+    });
+
+
+    const firstPlaceWins = sortedStandings.length > 0 ? sortedStandings[0].w : 0;
+    const firstPlaceLosses = sortedStandings.length > 0 ? sortedStandings[0].l : 0;
 
     let rank = 1;
-    const finalStandings: Standing[] = newStandings.map((standing, index) => {
+    const finalStandings: Standing[] = sortedStandings.map((standing, index) => {
       if (index > 0) {
-        const prevStanding = newStandings[index - 1];
+        const prevStanding = sortedStandings[index - 1];
         if (standing.w !== prevStanding.w || standing.l !== prevStanding.l) {
           rank = index + 1;
         }
@@ -271,7 +338,7 @@ export default function Home() {
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, false)}
               footer={
                 <div className="flex justify-end pt-4">
-                  <Button onClick={calculateStandings} variant="secondary">Guardar Resultados y Actualizar Posiciones</Button>
+                  <Button onClick={calculateStandings}>Guardar Resultados y Actualizar Posiciones</Button>
                 </div>
               }
             />
@@ -283,7 +350,7 @@ export default function Home() {
               isChampionship
               footer={
                 <div className="flex justify-end pt-4">
-                  <Button onClick={handleSaveChampionship} variant="secondary">Guardar Resultado Final</Button>
+                  <Button onClick={handleSaveChampionship}>Guardar Resultado Final</Button>
                 </div>
               }
             />

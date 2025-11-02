@@ -38,6 +38,12 @@ export default function StandingsTable({
     return `.${pct.toString().padStart(3, '0')}`;
   }
 
+  const isTied = (standing: Standing, index: number) => {
+    if (index > 0 && standing.pos === standings[index - 1].pos) return true;
+    if (index < standings.length - 1 && standing.pos === standings[index + 1].pos) return true;
+    return false;
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -59,9 +65,11 @@ export default function StandingsTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {standings.map((standing) => (
+              {standings.map((standing, index) => (
                 <TableRow key={standing.teamId}>
-                  <TableCell>{standing.pos}</TableCell>
+                  <TableCell>
+                    {isTied(standing, index) ? `(*) ${standing.pos}` : standing.pos}
+                  </TableCell>
                   <TableCell className="font-medium">
                     {getTeamName(standing.teamId)}
                   </TableCell>

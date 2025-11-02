@@ -128,12 +128,20 @@ export default function Home() {
     const firstPlaceWins = newStandings.length > 0 ? newStandings[0].w : 0;
     const firstPlaceLosses = newStandings.length > 0 ? newStandings[0].l : 0;
 
+    let rank = 1;
     const finalStandings: Standing[] = newStandings.map((standing, index) => {
+      if (index > 0) {
+        const prevStanding = newStandings[index - 1];
+        if (standing.w !== prevStanding.w || standing.l !== prevStanding.l) {
+          rank = index + 1;
+        }
+      }
+      
       const gamesBehind = ((firstPlaceWins - standing.w) + (standing.l - firstPlaceLosses)) / 2;
       return {
         ...standing,
-        pos: index + 1,
-        gb: index === 0 ? 0 : gamesBehind,
+        pos: rank,
+        gb: rank === 1 && gamesBehind === 0 ? 0 : gamesBehind,
       };
     });
 

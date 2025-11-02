@@ -67,6 +67,7 @@ export default function Home() {
   const [standings, setStandings] = useState<Standing[]>([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const championCardRef = useRef<HTMLDivElement>(null);
+  const [confettiSize, setConfettiSize] = useState({ width: 0, height: 0, top: 0, left: 0 });
 
   const { toast } = useToast();
   
@@ -345,7 +346,11 @@ export default function Home() {
           setChampion(winner.name);
           setShowConfetti(true);
           setTimeout(() => {
-            championCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (championCardRef.current) {
+              championCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              const { width, height, top, left } = championCardRef.current.getBoundingClientRect();
+              setConfettiSize({ width, height, top: top + window.scrollY, left: left + window.scrollX });
+            }
           }, 100);
           setTimeout(() => setShowConfetti(false), 8000);
           toast({
@@ -365,7 +370,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
+      {showConfetti && <Confetti recycle={false} numberOfPieces={500} width={confettiSize.width} height={confettiSize.height} style={{ position: 'absolute', top: confettiSize.top, left: confettiSize.left }} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 text-center">
           <h1 className="text-5xl font-black tracking-widest text-primary font-['Impact',_'Haettenschweiler',_'Arial_Narrow_Bold',_sans-serif]">THE SHOW PRO SERIES</h1>
@@ -426,3 +431,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

@@ -21,28 +21,32 @@ const initialTeams: Team[] = [
   { id: 6, name: "TEAM FINCA JUJURE (VEN)" },
 ];
 
-const initialGames: Game[] = [
-    // DÍA 1: Miércoles, 18 de marzo
-    { id: 1, team1Id: "2", score1: "", team2Id: "4", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "10:15" },
-    { id: 2, team1Id: "1", score1: "", team2Id: "6", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "13:15" },
-    { id: 3, team1Id: "3", score1: "", team2Id: "5", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "16:15" },
-    { id: 4, team1Id: "1", score1: "", team2Id: "5", score2: "", day: "DÍA 1: Miércoles, 18 de marzo", time: "21:00" },
-    // DÍA 2: Jueves, 19 de marzo
-    { id: 5, team1Id: "3", score1: "", team2Id: "6", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "10:15" },
-    { id: 6, team1Id: "2", score1: "", team2Id: "5", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "13:15" },
-    { id: 7, team1Id: "4", score1: "", team2Id: "1", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "16:15" },
-    { id: 8, team1Id: "3", score1: "", team2Id: "2", score2: "", day: "DÍA 2: Jueves, 19 de marzo", time: "21:00" },
-    // DÍA 3: Viernes, 20 de marzo
-    { id: 9, team1Id: "5", score1: "", team2Id: "6", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "10:15" },
-    { id: 10, team1Id: "4", score1: "", team2Id: "3", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "13:15" },
-    { id: 11, team1Id: "2", score1: "", team2Id: "1", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "16:15" },
-    { id: 12, team1Id: "6", score1: "", team2Id: "4", score2: "", day: "DÍA 3: Viernes, 20 de marzo", time: "21:00" },
-    // DÍA 4: Sábado, 21 de marzo
-    { id: 13, team1Id: "1", score1: "", team2Id: "3", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "12:00" },
-    { id: 14, team1Id: "6", score1: "", team2Id: "2", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "15:00" },
-    { id: 15, team1Id: "5", score1: "", team2Id: "4", score2: "", day: "DÍA 4: Sábado, 21 de marzo", time: "18:00" },
-];
+const createInitialGames = (): Game[] => {
+    const gameData = [
+        { id: 1, team1Id: "2", team2Id: "4", day: "DÍA 1: Miércoles, 18 de marzo", time: "10:15" },
+        { id: 2, team1Id: "1", team2Id: "6", day: "DÍA 1: Miércoles, 18 de marzo", time: "13:15" },
+        { id: 3, team1Id: "3", team2Id: "5", day: "DÍA 1: Miércoles, 18 de marzo", time: "16:15" },
+        { id: 4, team1Id: "1", team2Id: "5", day: "DÍA 1: Miércoles, 18 de marzo", time: "21:00" },
+        { id: 5, team1Id: "3", team2Id: "6", day: "DÍA 2: Jueves, 19 de marzo", time: "10:15" },
+        { id: 6, team1Id: "2", team2Id: "5", day: "DÍA 2: Jueves, 19 de marzo", time: "13:15" },
+        { id: 7, team1Id: "4", team2Id: "1", day: "DÍA 2: Jueves, 19 de marzo", time: "16:15" },
+        { id: 8, team1Id: "3", team2Id: "2", day: "DÍA 2: Jueves, 19 de marzo", time: "21:00" },
+        { id: 9, team1Id: "5", team2Id: "6", day: "DÍA 3: Viernes, 20 de marzo", time: "10:15" },
+        { id: 10, team1Id: "4", team2Id: "3", day: "DÍA 3: Viernes, 20 de marzo", time: "13:15" },
+        { id: 11, team1Id: "2", team2Id: "1", day: "DÍA 3: Viernes, 20 de marzo", time: "16:15" },
+        { id: 12, team1Id: "6", team2Id: "4", day: "DÍA 3: Viernes, 20 de marzo", time: "21:00" },
+        { id: 13, team1Id: "1", team2Id: "3", day: "DÍA 4: Sábado, 21 de marzo", time: "12:00" },
+        { id: 14, team1Id: "6", team2Id: "2", day: "DÍA 4: Sábado, 21 de marzo", time: "15:00" },
+        { id: 15, team1Id: "5", team2Id: "4", day: "DÍA 4: Sábado, 21 de marzo", time: "18:00" },
+    ];
 
+    return gameData.map(game => ({
+        ...game,
+        score1: "",
+        score2: "",
+        innings: Array(7).fill(0).map(() => ["", ""]),
+    }));
+};
 
 const initialChampionshipGame: Game = {
   id: 16,
@@ -52,18 +56,19 @@ const initialChampionshipGame: Game = {
   score2: "",
   day: "DÍA 4: Sábado, 21 de marzo",
   time: "21:00",
+  innings: Array(7).fill(0).map(() => ["", ""]),
 };
 
 export default function Home() {
   const [teams, setTeams] = useState<Team[]>(initialTeams);
-  const [preliminaryGames, setPreliminaryGames] = useState<Game[]>(initialGames);
+  const [preliminaryGames, setPreliminaryGames] = useState<Game[]>(createInitialGames());
   const [championshipGame, setChampionshipGame] = useState<Game>(initialChampionshipGame);
   const [champion, setChampion] = useState<string | null>(null);
   const [standings, setStandings] = useState<Standing[]>([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const { toast } = useToast();
-
+  
   const handleGameChange = (
     gameId: number,
     field: keyof Game,
@@ -78,6 +83,34 @@ export default function Home() {
       return prevState.map((game: Game) =>
         game.id === gameId ? { ...game, [field]: value } : game
       );
+    });
+  };
+
+  const handleInningChange = (
+    gameId: number,
+    inningIndex: number,
+    teamIndex: 0 | 1,
+    value: string,
+    isChampionship = false
+  ) => {
+    const updater = isChampionship ? setChampionshipGame : setPreliminaryGames;
+    updater((prevState: any) => {
+        const updateInnings = (game: Game) => {
+            const newInnings = [...game.innings];
+            newInnings[inningIndex][teamIndex] = value;
+            
+            const score1 = newInnings.reduce((sum, inning) => sum + (parseInt(String(inning[0])) || 0), 0);
+            const score2 = newInnings.reduce((sum, inning) => sum + (parseInt(String(inning[1])) || 0), 0);
+            
+            return { ...game, innings: newInnings, score1: String(score1), score2: String(score2) };
+        };
+        
+        if (isChampionship) {
+            return updateInnings(prevState);
+        }
+        return prevState.map((game: Game) =>
+            game.id === gameId ? updateInnings(game) : game
+        );
     });
   };
 
@@ -140,10 +173,8 @@ export default function Home() {
       standing.pct = gamesPlayed > 0 ? Math.round((standing.w / gamesPlayed) * 1000) : 0;
     });
 
-    // Main sort by wins
     newStandings.sort((a, b) => b.w - a.w);
 
-    // Group teams by win count for tie-breaking
     const groupedByWins: { [key: number]: (typeof newStandings) } = {};
     newStandings.forEach(s => {
       if (!groupedByWins[s.w]) {
@@ -159,25 +190,19 @@ export default function Home() {
         return;
       }
 
-      // Tie-breaking logic for groups of 2 or more
       group.sort((a, b) => {
         const tiedTeamIds = group.map(s => s.teamId);
-        
-        // 1. Head-to-head record among tied teams
         let winsA = 0;
         let winsB = 0;
         preliminaryGames.forEach(game => {
           const gameTeamIds = [parseInt(game.team1Id), parseInt(game.team2Id)];
           if (tiedTeamIds.includes(gameTeamIds[0]) && tiedTeamIds.includes(gameTeamIds[1])) {
-            const score1 = parseInt(game.score1);
-            const score2 = parseInt(game.score2);
-
             if(game.team1Id === String(a.teamId) && game.team2Id === String(b.teamId)) {
-                if(score1 > score2) winsA++;
-                if(score2 > score1) winsB++;
+                if(parseInt(game.score1) > parseInt(game.score2)) winsA++;
+                if(parseInt(game.score2) > parseInt(game.score1)) winsB++;
             } else if (game.team1Id === String(b.teamId) && game.team2Id === String(a.teamId)) {
-                if(score1 > score2) winsB++;
-                if(score2 > score1) winsA++;
+                if(parseInt(game.score1) > parseInt(game.score2)) winsB++;
+                if(parseInt(game.score2) > parseInt(game.score1)) winsA++;
             }
           }
         });
@@ -186,28 +211,48 @@ export default function Home() {
           return winsB - winsA;
         }
 
-        // 2. Team's Quality Balance (TQB) - Simplified as run differential for now
-        // TQB = (runs scored / innings at bat) – (runs allowed / innings on defence).
-        // Assuming 7 innings per game.
-        const gamesPlayedA = a.w + a.l;
-        const gamesPlayedB = b.w + b.l;
-        const inningsA = gamesPlayedA > 0 ? gamesPlayedA * 7 : 1;
-        const inningsB = gamesPlayedB > 0 ? gamesPlayedB * 7 : 1;
-        
-        const tqbA = (a.rs / inningsA) - (a.ra / inningsA);
-        const tqbB = (b.rs / inningsB) - (b.ra / inningsB);
-        
+        let rs_a = 0, ra_a = 0, innings_a = 0;
+        let rs_b = 0, ra_b = 0, innings_b = 0;
+
+        preliminaryGames.forEach(game => {
+          const isRelevant = tiedTeamIds.includes(parseInt(game.team1Id)) && tiedTeamIds.includes(parseInt(game.team2Id));
+          if (!isRelevant) return;
+
+          const inningsPlayed = game.innings.filter(inn => inn[0] !== '' || inn[1] !== '').length;
+
+          if (game.team1Id === String(a.teamId)) {
+            rs_a += parseInt(game.score1);
+            ra_a += parseInt(game.score2);
+            innings_a += inningsPlayed;
+          } else if (game.team2Id === String(a.teamId)) {
+            rs_a += parseInt(game.score2);
+            ra_a += parseInt(game.score1);
+            innings_a += inningsPlayed;
+          }
+
+          if (game.team1Id === String(b.teamId)) {
+            rs_b += parseInt(game.score1);
+            ra_b += parseInt(game.score2);
+            innings_b += inningsPlayed;
+          } else if (game.team2Id === String(b.teamId)) {
+            rs_b += parseInt(game.score2);
+            ra_b += parseInt(game.score1);
+            innings_b += inningsPlayed;
+          }
+        });
+
+        const tqbA = (innings_a > 0) ? (rs_a / innings_a) - (ra_a / innings_a) : 0;
+        const tqbB = (innings_b > 0) ? (rs_b / innings_b) - (ra_b / innings_b) : 0;
+
         if (tqbA !== tqbB) {
             return tqbB - tqbA;
         }
 
-        // 3. ER-TQB, Batting Average, Coin Flip - not implemented yet
         return 0;
       });
 
       sortedStandings.push(...group);
     });
-
 
     const firstPlaceWins = sortedStandings.length > 0 ? sortedStandings[0].w : 0;
     const firstPlaceLosses = sortedStandings.length > 0 ? sortedStandings[0].l : 0;
@@ -234,8 +279,8 @@ export default function Home() {
     if (finalStandings.length > 1 && finalStandings[0].w + finalStandings[0].l > 0) {
       setChampionshipGame(prev => ({
         ...prev,
-        team1Id: String(finalStandings[1].teamId), // 2nd place
-        team2Id: String(finalStandings[0].teamId)  // 1st place
+        team1Id: String(finalStandings[1].teamId),
+        team2Id: String(finalStandings[0].teamId)
       }));
     }
     
@@ -247,7 +292,6 @@ export default function Home() {
   }, [preliminaryGames, teams, toast]);
   
   useEffect(() => {
-    // Initial calculation on mount
     const newStandings: Omit<Standing, "pos" | "gb">[] = teams.map(team => ({
       teamId: team.id, w: 0, l: 0, rs: 0, ra: 0, pct: 0,
     }));
@@ -305,7 +349,7 @@ export default function Home() {
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 text-center">
-          <h1 className="text-5xl font-extrabold tracking-widest text-primary">THE SHOW PRO SERIES</h1>
+          <h1 className="text-5xl font-black tracking-widest text-primary font-['Impact',_'Haettenschweiler',_'Arial_Narrow_Bold',_sans-serif]">THE SHOW PRO SERIES</h1>
           <h2 className="text-3xl md:text-4xl font-bold mt-4">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
           <p className="text-lg md:text-xl text-muted-foreground mt-4">Paraná, ER - Argentina</p>
           <p className="text-md md:text-lg text-muted-foreground">Marzo, 2026</p>
@@ -336,6 +380,7 @@ export default function Home() {
               games={preliminaryGames}
               teams={teams}
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, false)}
+              onInningChange={(gameId, inningIndex, teamIndex, value) => handleInningChange(gameId, inningIndex, teamIndex, value, false)}
               footer={
                 <div className="flex justify-end pt-4">
                   <Button onClick={calculateStandings}>Guardar Resultados y Actualizar Posiciones</Button>
@@ -347,6 +392,7 @@ export default function Home() {
               games={[championshipGame]}
               teams={teams}
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, true)}
+              onInningChange={(gameId, inningIndex, teamIndex, value) => handleInningChange(gameId, inningIndex, teamIndex, value, true)}
               isChampionship
               footer={
                 <div className="flex justify-end pt-4">

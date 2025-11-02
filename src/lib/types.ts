@@ -12,6 +12,7 @@ export type Game = {
   score2: string;
   day?: string;
   time?: string;
+  innings: (string | number)[][]; // 7 innings, 2 teams
 };
 
 export type Standing = {

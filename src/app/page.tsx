@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { Team, Game, Standing } from "@/lib/types";
-import { LogoIcon, TrophyIcon } from "@/components/icons";
+import { TrophyIcon } from "@/components/icons";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -139,7 +139,7 @@ export default function Home() {
 
     setStandings(finalStandings);
     
-    if (finalStandings.length > 1) {
+    if (finalStandings.length > 1 && finalStandings[0].w + finalStandings[0].l > 0) {
       setChampionshipGame(prev => ({
         ...prev,
         team1Id: String(finalStandings[1].teamId), // 2nd place
@@ -209,9 +209,9 @@ export default function Home() {
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 text-center">
-          <LogoIcon className="w-48 h-auto text-primary mx-auto" />
-          <h1 className="text-3xl md:text-4xl font-bold text-primary mt-4">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h1>
-          <p className="text-lg md:text-xl text-muted-foreground mt-2">Paraná, ER - Argentina</p>
+          <h1 className="text-5xl font-extrabold tracking-tight" style={{fontFamily: 'Impact, Charcoal, sans-serif'}}>THE SHOW PRO SERIES</h1>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mt-4">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
+          <p className="text-lg md:text-xl text-muted-foreground mt-4">Paraná, ER - Argentina</p>
           <p className="text-md md:text-lg text-muted-foreground">Marzo, 2026</p>
         </header>
 
@@ -267,5 +267,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

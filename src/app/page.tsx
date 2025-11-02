@@ -105,7 +105,6 @@ export default function Home() {
             }
             newInnings[inningIndex][teamIndex] = normalizedValue;
             
-            // Auto-add new inning if typing in the last one
             if(inningIndex === newInnings.length - 1 && value !== "") {
               const score1 = newInnings.reduce((sum, inning) => sum + (parseInt(String(inning[0])) || 0), 0);
               const score2 = newInnings.reduce((sum, inning) => sum + (parseInt(String(inning[1])) || 0), 0);
@@ -346,7 +345,6 @@ export default function Home() {
           setChampion(winner.name);
           setShowConfetti(true);
           setTimeout(() => {
-            setShowConfetti(false);
             championCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }, 100);
           setTimeout(() => setShowConfetti(false), 8000);

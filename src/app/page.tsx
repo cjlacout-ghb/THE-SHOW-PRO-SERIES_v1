@@ -209,7 +209,7 @@ export default function Home() {
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 text-center">
-          <h1 className="text-5xl font-extrabold tracking-widest text-primary" style={{fontFamily: 'Impact, Charcoal, sans-serif'}}>THE SHOW PRO SERIES</h1>
+          <h1 className="text-5xl font-extrabold tracking-widest text-primary">THE SHOW PRO SERIES</h1>
           <h2 className="text-3xl md:text-4xl font-bold mt-4">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
           <p className="text-lg md:text-xl text-muted-foreground mt-4">Paraná, ER - Argentina</p>
           <p className="text-md md:text-lg text-muted-foreground">Marzo, 2026</p>
@@ -242,7 +242,7 @@ export default function Home() {
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, false)}
               footer={
                 <div className="flex justify-end pt-4">
-                  <Button onClick={calculateStandings}>Guardar Resultados y Actualizar Posiciones</Button>
+                  <Button onClick={calculateStandings} variant="secondary">Guardar Resultados y Actualizar Posiciones</Button>
                 </div>
               }
             />
@@ -254,7 +254,7 @@ export default function Home() {
               isChampionship
               footer={
                 <div className="flex justify-end pt-4">
-                  <Button onClick={handleSaveChampionship}>Guardar Resultado Final</Button>
+                  <Button onClick={handleSaveChampionship} variant="secondary">Guardar Resultado Final</Button>
                 </div>
               }
             />
@@ -262,7 +262,7 @@ export default function Home() {
         </div>
       </main>
       <footer className="py-6 text-center text-sm text-muted-foreground">
-        Hecho por amor al juego.
+        copyright: Cristian Lacout | Hecho por amor al juego
       </footer>
     </div>
   );

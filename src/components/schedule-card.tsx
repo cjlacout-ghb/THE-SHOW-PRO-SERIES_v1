@@ -20,6 +20,7 @@ type ScheduleCardProps = {
   teams: Team[];
   onGameChange: (gameId: number, field: keyof Game, value: string) => void;
   footer?: React.ReactNode;
+  isChampionship?: boolean;
 };
 
 export default function ScheduleCard({
@@ -28,12 +29,23 @@ export default function ScheduleCard({
   teams,
   onGameChange,
   footer,
+  isChampionship = false
 }: ScheduleCardProps) {
   const getTeamName = (teamId: string) => {
     return teams.find((t) => String(t.id) === teamId)?.name || "";
   };
   
   let lastDay: string | undefined = undefined;
+
+  const getTeamPlaceholder = (game: Game, teamNumber: 1 | 2) => {
+      if (!isChampionship) {
+        return getTeamName(teamNumber === 1 ? game.team1Id : game.team2Id);
+      }
+      if (game.team1Id && game.team2Id) {
+        return getTeamName(teamNumber === 1 ? game.team1Id : game.team2Id);
+      }
+      return teamNumber === 1 ? "2° RONDA INICIAL" : "1° RONDA INICIAL";
+  }
 
   return (
     <Card>
@@ -49,7 +61,6 @@ export default function ScheduleCard({
           if (showDay) {
             lastDay = game.day;
           }
-          const isChampionship = title === "Partido Final";
           const gameNumber = isChampionship ? 16 : game.id;
           
           return (
@@ -61,7 +72,7 @@ export default function ScheduleCard({
                 </Label>
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_min-content_2fr_1fr] gap-2 items-center">
                    <div className="p-2 text-sm text-center rounded-md bg-muted min-h-[40px] flex items-center justify-center">
-                    {getTeamName(game.team1Id)}
+                    {getTeamPlaceholder(game, 1)}
                   </div>
                   <Input
                     type="number"
@@ -75,7 +86,7 @@ export default function ScheduleCard({
                     VS
                   </span>
                    <div className="p-2 text-sm text-center rounded-md bg-muted min-h-[40px] flex items-center justify-center">
-                    {getTeamName(game.team2Id)}
+                    {getTeamPlaceholder(game, 2)}
                   </div>
                   <Input
                     type="number"

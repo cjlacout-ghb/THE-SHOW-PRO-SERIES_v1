@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { Team, Game, Standing } from "@/lib/types";
-import { LogoIcon, TrophyIcon } from "@/components/icons";
+import { SoftballIcon, TrophyIcon } from "@/components/icons";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -142,8 +142,8 @@ export default function Home() {
     if (finalStandings.length > 1) {
       setChampionshipGame(prev => ({
         ...prev,
-        team1Id: String(finalStandings[0].teamId),
-        team2Id: String(finalStandings[1].teamId)
+        team1Id: String(finalStandings[1].teamId), // 2nd place
+        team2Id: String(finalStandings[0].teamId)  // 1st place
       }));
     }
     
@@ -209,7 +209,7 @@ export default function Home() {
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 flex items-center justify-center">
-          <LogoIcon className="w-48 h-auto text-primary" />
+          <SoftballIcon className="w-48 h-auto text-primary" />
         </header>
 
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
@@ -248,6 +248,7 @@ export default function Home() {
               games={[championshipGame]}
               teams={teams}
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, true)}
+              isChampionship
               footer={
                 <div className="flex justify-end pt-4">
                   <Button onClick={handleSaveChampionship}>Guardar Resultado Final</Button>

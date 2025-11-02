@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Fragment } from "react";
 import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
 
 type ScheduleCardProps = {
   title: string;
@@ -21,6 +22,7 @@ type ScheduleCardProps = {
   teams: Team[];
   onGameChange: (gameId: number, field: keyof Game, value: string) => void;
   onInningChange: (gameId: number, inningIndex: number, teamIndex: 0 | 1, value: string) => void;
+  onSave?: () => void;
   footer?: React.ReactNode;
   isChampionship?: boolean;
 };
@@ -31,6 +33,7 @@ export default function ScheduleCard({
   teams,
   onGameChange,
   onInningChange,
+  onSave,
   footer,
   isChampionship = false
 }: ScheduleCardProps) {
@@ -138,6 +141,11 @@ export default function ScheduleCard({
                   </div>
                 </div>
 
+                {!isChampionship && onSave && (
+                   <div className="flex justify-end pt-4">
+                      <Button onClick={onSave}>Guardar Resultados y Actualizar Posiciones</Button>
+                  </div>
+                )}
               </div>
             </Fragment>
           );
@@ -147,3 +155,5 @@ export default function ScheduleCard({
     </Card>
   );
 }
+
+    

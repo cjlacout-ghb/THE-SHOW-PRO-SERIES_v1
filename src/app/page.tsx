@@ -381,11 +381,7 @@ export default function Home() {
               teams={teams}
               onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, false)}
               onInningChange={(gameId, inningIndex, teamIndex, value) => handleInningChange(gameId, inningIndex, teamIndex, value, false)}
-              footer={
-                <div className="flex justify-end pt-4">
-                  <Button onClick={calculateStandings}>Guardar Resultados y Actualizar Posiciones</Button>
-                </div>
-              }
+              onSave={calculateStandings}
             />
             <ScheduleCard
               title="Partido Final"
@@ -409,3 +405,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

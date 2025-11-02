@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { Team, Game, Standing } from "@/lib/types";
-import { SoftballIcon, TrophyIcon } from "@/components/icons";
+import { LogoIcon, TrophyIcon } from "@/components/icons";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -208,16 +208,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
-        <header className="mb-10">
-          <div className="flex items-center gap-4">
-            <SoftballIcon className="w-12 h-12 text-primary" />
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight font-headline text-primary">
-                Central de Softball Showdown
-              </h1>
-              <p className="text-muted-foreground">TORNEO THE SHOW PRO SERIES</p>
-            </div>
-          </div>
+        <header className="mb-10 flex items-center justify-center">
+          <LogoIcon className="w-48 h-auto text-primary" />
         </header>
 
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
@@ -228,10 +220,10 @@ export default function Home() {
               standings={standings}
             />
             {champion && (
-              <Card className="bg-card border-ring ring-2 ring-ring shadow-lg animate-in fade-in-50">
+              <Card className="bg-card border-primary ring-2 ring-primary shadow-lg animate-in fade-in-50">
                 <CardHeader className="items-center text-center">
-                  <TrophyIcon className="w-16 h-16 text-ring" />
-                  <CardTitle className="text-2xl text-ring">¡Equipo Campeón!</CardTitle>
+                  <TrophyIcon className="w-16 h-16 text-primary" />
+                  <CardTitle className="text-2xl text-primary">¡Equipo Campeón!</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-3xl font-bold tracking-wider text-foreground">{champion}</p>

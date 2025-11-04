@@ -40,12 +40,30 @@ const createInitialGames = (): Game[] => {
         { id: 15, team1Id: "5", team2Id: "4", day: "DÍA 4: Sábado, 21 de marzo", time: "18:00" },
     ];
 
-    return gameData.map(game => ({
-        ...game,
-        score1: "",
-        score2: "",
-        innings: Array(7).fill(0).map(() => ["", ""]),
-    }));
+    return gameData.map(game => {
+        if (game.id === 1) {
+            return {
+                ...game,
+                score1: "7",
+                score2: "5",
+                innings: [
+                    ["1", "0"],
+                    ["1", "0"],
+                    ["1", "0"],
+                    ["1", "0"],
+                    ["1", "0"],
+                    ["1", "2"],
+                    ["1", "3"],
+                ],
+            };
+        }
+        return {
+            ...game,
+            score1: "",
+            score2: "",
+            innings: Array(7).fill(0).map(() => ["", ""]),
+        };
+    });
 };
 
 const initialChampionshipGame: Game = {
@@ -309,13 +327,8 @@ export default function Home() {
   }, [preliminaryGames, teams, toast]);
   
   useEffect(() => {
-    const newStandings: Omit<Standing, "pos" | "gb">[] = teams.map(team => ({
-      teamId: team.id, w: 0, l: 0, rs: 0, ra: 0, pct: 0,
-    }));
-    const finalStandings: Standing[] = newStandings.map((standing, index) => ({
-      ...standing, pos: index + 1, gb: 0,
-    }));
-    setStandings(finalStandings);
+    calculateStandings();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams]);
   
   const handleSaveChampionship = () => {

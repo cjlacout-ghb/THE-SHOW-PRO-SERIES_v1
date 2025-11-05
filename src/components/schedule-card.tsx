@@ -59,11 +59,6 @@ export default function ScheduleCard({
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        {!isChampionship && (
-          <CardDescription>
-            Agregue una 'X' en las entradas no jugadas. Se agregarán entradas adicionales si es necesario.
-          </CardDescription>
-        )}
       </CardHeader>
       <CardContent className="space-y-6">
         {games.map((game) => {
@@ -176,5 +171,3 @@ export default function ScheduleCard({
     </Card>
   );
 }
-
-    

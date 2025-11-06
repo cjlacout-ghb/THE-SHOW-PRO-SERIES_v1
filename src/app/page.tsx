@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Confetti from "react-confetti";
+import Image from "next/image";
 
 const initialTeams: Team[] = [
   { id: 1, name: "ACCIN VORTEX (ARG)" },
@@ -406,11 +407,15 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} width={confettiSize.width} height={confettiSize.height} style={{ position: 'absolute', top: confettiSize.top, left: confettiSize.left }} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
-        <header className="mb-10 text-center">
-          <h1 className="text-5xl font-black tracking-widest text-primary">THE SHOW PRO SERIES</h1>
-          <h2 className="text-3xl md:text-4xl font-bold mt-4">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
-          <p className="text-lg md:text-xl text-muted-foreground mt-4">Paraná, ER - Argentina</p>
-          <p className="text-md md:text-lg text-muted-foreground">Marzo, 2026</p>
+        <header className="mb-10 flex items-center justify-between">
+          <Image src="/images/logo.png" alt="The Show Pro Series Logo" width={120} height={120} className="w-20 h-20 md:w-32 md:h-32"/>
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-black tracking-widest text-primary">THE SHOW PRO SERIES</h1>
+            <h2 className="text-2xl md:text-4xl font-bold mt-2">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
+            <p className="text-md md:text-xl text-muted-foreground mt-2">Paraná, ER - Argentina</p>
+            <p className="text-sm md:text-lg text-muted-foreground">Marzo, 2026</p>
+          </div>
+          <div className="w-20 h-20 md:w-32 md:h-32" />
         </header>
 
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
@@ -456,13 +461,12 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="py-6 text-center text-sm text-muted-foreground">
-        copyright: Cristian Lacout | Hecho por amor al juego
+      <footer className="py-6 flex flex-col items-center justify-center gap-4 text-center text-sm text-muted-foreground">
+        <Image src="/images/sponsor-logo.png" alt="Sponsor Logo" width={200} height={100} />
+        <p>copyright: Cristian Lacout | Hecho por amor al juego</p>
       </footer>
     </div>
   );
 }
-
-    
 
     

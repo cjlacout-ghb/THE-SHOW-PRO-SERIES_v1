@@ -408,7 +408,7 @@ export default function Home() {
       {showConfetti && <Confetti recycle={false} numberOfPieces={500} width={confettiSize.width} height={confettiSize.height} style={{ position: 'absolute', top: confettiSize.top, left: confettiSize.left }} />}
       <main className="flex-1 container mx-auto p-4 md:p-8">
         <header className="mb-10 flex items-center justify-between">
-          <Image src="/images/logo.png" alt="The Show Pro Series Logo" width={120} height={120} className="w-20 h-20 md:w-32 md:h-32"/>
+          <Image src="/images/logo.png" alt="The Show Pro Series Logo" width={120} height={120} />
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-black tracking-widest text-primary">THE SHOW PRO SERIES</h1>
             <h2 className="text-2xl md:text-4xl font-bold mt-2">TORNEO INTERNACIONAL DE SOFTBOL MASCULINO</h2>
@@ -468,5 +468,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

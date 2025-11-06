@@ -230,119 +230,138 @@ export default function Home() {
 
     newStandings.forEach(standing => {
       const gamesPlayed = standing.w + standing.l;
-      standing.pct = gamesPlayed > 0 ? Math.round((standing.w / gamesPlayed) * 1000) : 0;
+      standing.pct = gamesPlayed > 0 ? standing.w / gamesPlayed : 0;
     });
 
-    newStandings.sort((a, b) => b.w - a.w);
-
-    const groupedByWins: { [key: number]: (typeof newStandings) } = {};
-    newStandings.forEach(s => {
-      if (!groupedByWins[s.w]) {
-        groupedByWins[s.w] = [];
-      }
-      groupedByWins[s.w].push(s);
+    newStandings.sort((a, b) => {
+        if (b.pct !== a.pct) {
+            return b.pct - a.pct;
+        }
+        // If percentages are equal, team with fewer games played is ranked higher
+        const gamesA = a.w + a.l;
+        const gamesB = b.w + b.l;
+        if (gamesA !== gamesB) {
+            return gamesA - gamesB;
+        }
+        return 0; // Fallback for further tie-breaking if needed
     });
 
-    const sortedStandings: (typeof newStandings) = [];
-    Object.values(groupedByWins).reverse().forEach(group => {
-      if (group.length <= 1) {
-        sortedStandings.push(...group);
-        return;
-      }
+    const tiebreakerNeededStandings = [...newStandings];
 
-      group.sort((a, b) => {
-        const tiedTeamIds = group.map(s => s.teamId);
-        let winsA = 0;
-        let winsB = 0;
-        gamesToProcess.forEach(game => {
-          const gameTeamIds = [parseInt(game.team1Id), parseInt(game.team2Id)];
-          if (tiedTeamIds.includes(gameTeamIds[0]) && tiedTeamIds.includes(gameTeamIds[1])) {
-            if(game.team1Id === String(a.teamId) && game.team2Id === String(b.teamId)) {
-                if(parseInt(game.score1) > parseInt(game.score2)) winsA++;
-                if(parseInt(game.score2) > parseInt(game.score1)) winsB++;
-            } else if (game.team1Id === String(b.teamId) && game.team2Id === String(a.teamId)) {
-                if(parseInt(game.score1) > parseInt(game.score2)) winsB++;
-                if(parseInt(game.score2) > parseInt(game.score1)) winsA++;
+    const finalSortedStandings: (typeof newStandings) = [];
+    while (tiebreakerNeededStandings.length > 0) {
+        const group = tiebreakerNeededStandings.splice(0, 1);
+        const s = group[0];
+        while (
+            tiebreakerNeededStandings.length > 0 &&
+            tiebreakerNeededStandings[0].pct === s.pct
+        ) {
+            group.push(tiebreakerNeededStandings.splice(0, 1)[0]);
+        }
+
+        if (group.length <= 1) {
+            finalSortedStandings.push(...group);
+            continue;
+        }
+        
+        group.sort((a, b) => {
+            const tiedTeamIds = group.map(s => s.teamId);
+            let winsA = 0;
+            let winsB = 0;
+            gamesToProcess.forEach(game => {
+              const gameTeamIds = [parseInt(game.team1Id), parseInt(game.team2Id)];
+              if (tiedTeamIds.includes(gameTeamIds[0]) && tiedTeamIds.includes(gameTeamIds[1])) {
+                if(String(a.teamId) === game.team1Id && String(b.teamId) === game.team2Id) {
+                    if(parseInt(game.score1) > parseInt(game.score2)) winsA++;
+                    if(parseInt(game.score2) > parseInt(game.score1)) winsB++;
+                } else if (String(b.teamId) === game.team1Id && String(a.teamId) === game.team2Id) {
+                    if(parseInt(game.score1) > parseInt(game.score2)) winsB++;
+                    if(parseInt(game.score2) > parseInt(game.score1)) winsA++;
+                }
+              }
+            });
+
+            if (winsA !== winsB) {
+              return winsB - winsA;
             }
-          }
+
+            let rs_a = 0, ra_a = 0, innings_def_a = 0;
+            let rs_b = 0, ra_b = 0, innings_def_b = 0;
+    
+            gamesToProcess.forEach(game => {
+              const isRelevant = tiedTeamIds.includes(parseInt(game.team1Id)) && tiedTeamIds.includes(parseInt(game.team2Id));
+              if (!isRelevant) return;
+    
+              const inningsPlayedTeam1 = game.innings.filter(inn => inn[0] !== '' && inn[0] !== 'X').length;
+              const inningsPlayedTeam2 = game.innings.filter(inn => inn[1] !== '' && inn[1] !== 'X').length;
+
+              if (game.team1Id === String(a.teamId)) {
+                rs_a += parseInt(game.score1);
+                ra_a += parseInt(game.score2);
+                innings_def_a += inningsPlayedTeam2;
+              } else if (game.team2Id === String(a.teamId)) {
+                rs_a += parseInt(game.score2);
+                ra_a += parseInt(game.score1);
+                innings_def_a += inningsPlayedTeam1;
+              }
+    
+              if (game.team1Id === String(b.teamId)) {
+                rs_b += parseInt(game.score1);
+                ra_b += parseInt(game.score2);
+                innings_def_b += inningsPlayedTeam2;
+              } else if (game.team2Id === String(b.teamId)) {
+                rs_b += parseInt(game.score2);
+                ra_b += parseInt(game.score1);
+                innings_def_b += inningsPlayedTeam1;
+              }
+            });
+    
+            const tqbA = (innings_def_a > 0) ? (rs_a / innings_def_a) - (ra_a / innings_def_a) : 0;
+            const tqbB = (innings_def_b > 0) ? (rs_b / innings_def_b) - (ra_b / innings_def_b) : 0;
+    
+            if (tqbA !== tqbB) {
+                return tqbB - tqbA;
+            }
+    
+            return 0;
         });
 
-        if (winsA !== winsB) {
-          return winsB - winsA;
-        }
+        finalSortedStandings.push(...group);
+    }
 
-        let rs_a = 0, ra_a = 0, innings_def_a = 0;
-        let rs_b = 0, ra_b = 0, innings_def_b = 0;
-
-        gamesToProcess.forEach(game => {
-          const isRelevant = tiedTeamIds.includes(parseInt(game.team1Id)) && tiedTeamIds.includes(parseInt(game.team2Id));
-          if (!isRelevant) return;
-
-          const inningsPlayedTeam1 = game.innings.filter(inn => inn[0] !== '' && inn[0] !== 'X').length;
-          const inningsPlayedTeam2 = game.innings.filter(inn => inn[1] !== '' && inn[1] !== 'X').length;
-
-
-          if (game.team1Id === String(a.teamId)) {
-            rs_a += parseInt(game.score1);
-            ra_a += parseInt(game.score2);
-            innings_def_a += inningsPlayedTeam2;
-          } else if (game.team2Id === String(a.teamId)) {
-            rs_a += parseInt(game.score2);
-            ra_a += parseInt(game.score1);
-            innings_def_a += inningsPlayedTeam1;
-          }
-
-          if (game.team1Id === String(b.teamId)) {
-            rs_b += parseInt(game.score1);
-            ra_b += parseInt(game.score2);
-            innings_def_b += inningsPlayedTeam2;
-          } else if (game.team2Id === String(b.teamId)) {
-            rs_b += parseInt(game.score2);
-            ra_b += parseInt(game.score1);
-            innings_def_b += inningsPlayedTeam1;
-          }
-        });
-
-        const tqbA = (innings_def_a > 0) ? (rs_a / innings_def_a) - (ra_a / innings_def_a) : 0;
-        const tqbB = (innings_def_b > 0) ? (rs_b / innings_def_b) - (ra_b / innings_def_b) : 0;
-
-        if (tqbA !== tqbB) {
-            return tqbB - tqbA;
-        }
-
-        return 0;
-      });
-
-      sortedStandings.push(...group);
-    });
-
-    const firstPlaceWins = sortedStandings.length > 0 ? sortedStandings[0].w : 0;
-    const firstPlaceLosses = sortedStandings.length > 0 ? sortedStandings[0].l : 0;
+    const firstPlaceWins = finalSortedStandings.length > 0 ? finalSortedStandings[0].w : 0;
+    const firstPlaceLosses = finalSortedStandings.length > 0 ? finalSortedStandings[0].l : 0;
 
     let rank = 1;
-    const finalStandings: Standing[] = sortedStandings.map((standing, index) => {
+    const finalStandingsWithRank: Standing[] = finalSortedStandings.map((standing, index) => {
       if (index > 0) {
-        const prevStanding = sortedStandings[index - 1];
+        const prevStanding = finalSortedStandings[index - 1];
         if (standing.w !== prevStanding.w || standing.l !== prevStanding.l) {
           rank = index + 1;
         }
       }
       
       const gamesBehind = ((firstPlaceWins - standing.w) + (standing.l - firstPlaceLosses)) / 2;
+
+      // Ensure pct is a number rounded for display
+      const gamesPlayed = standing.w + standing.l;
+      const displayPct = gamesPlayed > 0 ? Math.round((standing.w / gamesPlayed) * 1000) : 0;
+
       return {
         ...standing,
         pos: rank,
-        gb: rank === 1 && gamesBehind === 0 ? 0 : gamesBehind,
+        gb: gamesPlayed === 0 ? 0 : gamesBehind, // GB is 0 if no games played
+        pct: displayPct,
       };
     });
 
-    setStandings(finalStandings);
+    setStandings(finalStandingsWithRank);
     
-    if (finalStandings.length > 1 && finalStandings.every(s => s.w + s.l > 0)) {
+    if (finalStandingsWithRank.length > 1 && finalStandingsWithRank.every(s => s.w + s.l > 0)) {
       setChampionshipGame(prev => ({
         ...prev,
-        team1Id: String(finalStandings[1].teamId),
-        team2Id: String(finalStandings[0].teamId)
+        team1Id: String(finalStandingsWithRank[1].teamId),
+        team2Id: String(finalStandingsWithRank[0].teamId)
       }));
     }
 
@@ -383,7 +402,7 @@ export default function Home() {
           setTimeout(() => {
             if (championCardRef.current) {
               championCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              const { width, height, top, left } = championCardref.current.getBoundingClientRect();
+              const { width, height, top, left } = championCardRef.current.getBoundingClientRect();
               setConfettiSize({ width, height, top: top + window.scrollY, left: left + window.scrollX });
             }
           }, 100);

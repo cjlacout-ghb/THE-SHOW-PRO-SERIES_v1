@@ -63,6 +63,26 @@ const createInitialGames = (): Game[] => {
                 ],
             };
         }
+        if (game.id === 2) {
+            return {
+                ...game,
+                score1: "5",
+                score2: "7",
+                hits1: "5",
+                errors1: "4",
+                hits2: "11",
+                errors2: "0",
+                innings: [
+                    ["1", "0"],
+                    ["0", "0"],
+                    ["1", "1"],
+                    ["1", "0"],
+                    ["0", "1"],
+                    ["1", "5"],
+                    ["1", "X"],
+                ],
+            };
+        }
         return {
             ...game,
             score1: "",
@@ -117,11 +137,17 @@ export default function Home() {
     const updater = isChampionship ? setChampionshipGame : setPreliminaryGames;
     updater((prevState: any) => {
       if (isChampionship) {
-        return { ...prevState, [field]: value };
+        const updatedGame = { ...prevState, [field]: value };
+        if(field === 'score1' || field === 'score2') {
+          handleSaveChampionship(updatedGame);
+        }
+        return updatedGame;
       }
-      return prevState.map((game: Game) =>
+      const newGames = prevState.map((game: Game) =>
         game.id === gameId ? { ...game, [field]: value } : game
       );
+      calculateStandings(newGames);
+      return newGames;
     });
   };
 
@@ -466,8 +492,8 @@ export default function Home() {
               title="Ronda Inicial"
               games={preliminaryGames}
               teams={teams}
-              onGameChange={(gameId, field, value) => handleGameChange(gameId, field, value, false)}
-              onInningChange={(gameId, inningIndex, teamIndex, value) => handleInningChange(gameId, inningIndex, teamIndex, value, false)}
+              onGameChange={handleGameChange}
+              onInningChange={handleInningChange}
               onNavigate={handleGoToStandings}
             />
             <ScheduleCard

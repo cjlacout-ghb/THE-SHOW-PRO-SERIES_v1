@@ -3,6 +3,7 @@ export type Player = {
   id: number;
   name: string;
   number: number;
+  role: string;
 };
 
 export type Team = {
@@ -32,4 +33,5 @@ export type Standing = {
   pct: number;
   gb: number;
 };
+    
     

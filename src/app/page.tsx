@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import type { Team, Game, Standing } from "@/lib/types";
+import type { Team, Game, Standing, Player } from "@/lib/types";
 import { TrophyIcon, CalendarDays, Users, BarChart3 } from "lucide-react";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
@@ -13,8 +13,32 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Confetti from "react-confetti";
 import Image from "next/image";
 
+const accinVortexPlayers: Player[] = [
+    { id: 1, number: 1, name: "JORGE SEGURA", role: "PITCHER" },
+    { id: 2, number: 2, name: "JUAN DIEGO MORALES", role: "PITCHER" },
+    { id: 3, number: 3, name: "JUAN JOSÉ PEPE", role: "PITCHER" },
+    { id: 4, number: 14, name: "LEONARDO BRESS", role: "PITCHER" },
+    { id: 5, number: 27, name: "LUIS TORREJÓN", role: "CATCHER" },
+    { id: 6, number: 4, name: "FAUSTO SIVIERO", role: "CATCHER" },
+    { id: 7, number: 52, name: "MANUEL GODOY", role: "INFIELDER" },
+    { id: 8, number: 8, name: "FEDERICO OLHEISER", role: "INFIELDER" },
+    { id: 9, number: 10, name: "FRANCO ORTELLADO", role: "INFIELDER" },
+    { id: 10, number: 5, name: "FELIPE MUÑOZ", role: "INFIELDER" },
+    { id: 11, number: 66, name: "NAHIM BRAHIM", role: "OUTFIELDER" },
+    { id: 12, number: 7, name: "JUNIOR GUAPE", role: "OUTFIELDER" },
+    { id: 13, number: 8, name: "LAUTARO FERRARA", role: "OUTFIELDER" },
+    { id: 14, number: 13, name: "MARCOS PORCO", role: "OUTFIELDER" },
+    { id: 15, number: 31, name: "LAUTARO GARCÍA", role: "OUTFIELDER" },
+    { id: 16, number: 32, name: "JOSÉ DORANTES", role: "UTILITY" },
+    { id: 17, number: 82, name: "GUSTAVO GODOY", role: "COACH" },
+    { id: 18, number: 18, name: "ÁLVARO QUISPE", role: "COACH" },
+    { id: 19, number: 33, name: "CHRISTIAN RIAL", role: "TEAM PRINCIPAL" },
+    { id: 20, number: 6, name: "IVÁN FURMAN", role: "HEAD COACH" },
+    { id: 21, number: 22, name: "MARIO PORCO", role: "HEAD COACH" },
+];
+
 const initialTeams: Team[] = [
-  { id: 1, name: "ACCIN VORTEX (ARG)", players: [] },
+  { id: 1, name: "ACCIN VORTEX (ARG)", players: accinVortexPlayers },
   { id: 2, name: "CACIQUES BY SWING (CHI)", players: [] },
   { id: 3, name: "CITY PAN (CHI)", players: [] },
   { id: 4, name: "MAYO'S (MEX)", players: [] },
@@ -528,3 +552,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

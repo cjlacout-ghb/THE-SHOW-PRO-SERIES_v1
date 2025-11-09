@@ -18,15 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "./ui/button";
 
 type StandingsTableProps = {
   standings: Standing[];
   teams: Team[];
+  onNavigate?: () => void;
 };
 
 export default function StandingsTable({
   standings,
   teams,
+  onNavigate
 }: StandingsTableProps) {
   const tableColumns = ["POS", "TEAM", "W", "L", "RS", "RA", "PCT", "GB"];
 
@@ -88,11 +91,16 @@ export default function StandingsTable({
           </Table>
         </div>
       </CardContent>
-      {hasTies && (
-        <CardFooter>
-          <p className="text-xs text-muted-foreground">(*) Equipos empatados</p>
-        </CardFooter>
-      )}
+      <CardFooter className="flex flex-col items-start gap-2">
+          {hasTies && (
+            <p className="text-xs text-muted-foreground">(*) Equipos empatados</p>
+          )}
+          {onNavigate && (
+            <div className="flex justify-end w-full">
+                <Button variant="secondary" onClick={onNavigate}>Ir a Partidos</Button>
+            </div>
+          )}
+      </CardFooter>
     </Card>
   );
 }

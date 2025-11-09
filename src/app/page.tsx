@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { Team, Game, Standing } from "@/lib/types";
-import { TrophyIcon } from "@/components/icons";
+import { TrophyIcon, CalendarDays, Users, BarChart3 } from "lucide-react";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -102,14 +102,18 @@ export default function Home() {
   const [champion, setChampion] = useState<string | null>(null);
   const [standings, setStandings] = useState<Standing[]>([]);
   const [showConfetti, setShowConfetti] = useState(false);
-  const championCardRef = useRef<HTMLDivElement>(null);
+  
+  const teamRosterRef = useRef<HTMLDivElement>(null);
+  const scheduleRef = useRef<HTMLDivElement>(null);
   const standingsRef = useRef<HTMLDivElement>(null);
+  const championCardRef = useRef<HTMLDivElement>(null);
+  
   const [confettiSize, setConfettiSize] = useState({ width: 0, height: 0, top: 0, left: 0 });
 
   const { toast } = useToast();
 
-  const handleGoToStandings = () => {
-    standingsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const handleScrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   
   const handleGameChange = (
@@ -248,21 +252,19 @@ export default function Home() {
             return b.pct - a.pct;
         }
 
-        // Tie-breaker 1: Run Differential
         const diffA = a.rs - a.ra;
         const diffB = b.rs - b.ra;
         if (diffB !== diffA) {
             return diffB - diffA;
         }
         
-        // Tie-breaker 2: Fewer games played is better for teams with 0-0 record
         const gamesA = a.w + a.l;
         const gamesB = b.w + b.l;
         if (gamesA !== gamesB) {
             return gamesA - gamesB;
         }
 
-        return 0; // Fallback for further tie-breaking if needed
+        return 0; 
     });
 
     const tiebreakerNeededStandings = [...newStandings];
@@ -362,21 +364,20 @@ export default function Home() {
       
       const gamesBehind = ((firstPlaceWins - standing.w) + (standing.l - firstPlaceLosses)) / 2;
 
-      // Ensure pct is a number rounded for display
       const gamesPlayed = standing.w + standing.l;
       const displayPct = gamesPlayed > 0 ? Math.round((standing.w / gamesPlayed) * 1000) : 0;
 
       return {
         ...standing,
         pos: rank,
-        gb: gamesPlayed === 0 ? 0 : gamesBehind, // GB is 0 if no games played
+        gb: gamesPlayed === 0 ? 0 : gamesBehind, 
         pct: displayPct,
       };
     });
 
     setStandings(finalStandingsWithRank);
     
-    if (finalStandingsWithRank.length > 1 && finalStandingsWithRank.every(s => s.w + s.l > 0)) {
+    if (finalStandingsWithRank.length > 1 && finalStandingsWithRank.every(s => s.w + s.l === 5)) {
       setChampionshipGame(prev => ({
         ...prev,
         team1Id: String(finalStandingsWithRank[1].teamId),
@@ -384,11 +385,10 @@ export default function Home() {
       }));
     }
 
-  }, [teams, toast]);
+  }, [teams, toast, preliminaryGames]);
   
   useEffect(() => {
     calculateStandings(preliminaryGames);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams]);
   
   const handleSaveChampionship = (finalGame: Game) => {
@@ -457,13 +457,32 @@ export default function Home() {
           </div>
         </header>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <Button size="lg" variant="outline" onClick={() => handleScrollTo(teamRosterRef)}>
+                <Users className="mr-2 h-5 w-5" />
+                Team Roster Input
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => handleScrollTo(scheduleRef)}>
+                <CalendarDays className="mr-2 h-5 w-5" />
+                Schedule and Results
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => handleScrollTo(standingsRef)}>
+                <BarChart3 className="mr-2 h-5 w-5" />
+                Standings Display
+            </Button>
+        </div>
+
+
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
           <div className="xl:col-span-2 space-y-8">
-            <TeamSetup teams={teams} />
+            <div ref={teamRosterRef}>
+              <TeamSetup teams={teams} />
+            </div>
             <div ref={standingsRef}>
               <StandingsTable
                 teams={teams}
                 standings={standings}
+                onNavigate={() => handleScrollTo(scheduleRef)}
               />
             </div>
             {champion && (
@@ -481,14 +500,16 @@ export default function Home() {
             )}
           </div>
           <div className="xl:col-span-3 space-y-8">
-            <ScheduleCard
-              title="Ronda Inicial"
-              games={preliminaryGames}
-              teams={teams}
-              onGameChange={handleGameChange}
-              onInningChange={handleInningChange}
-              onNavigate={handleGoToStandings}
-            />
+            <div ref={scheduleRef}>
+              <ScheduleCard
+                title="Ronda Inicial"
+                games={preliminaryGames}
+                teams={teams}
+                onGameChange={handleGameChange}
+                onInningChange={handleInningChange}
+                onNavigate={() => handleScrollTo(standingsRef)}
+              />
+            </div>
             <ScheduleCard
               title="Partido Final"
               games={[championshipGame]}
@@ -507,5 +528,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

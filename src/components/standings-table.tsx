@@ -98,9 +98,9 @@ export default function StandingsTable({
           )}
           {onNavigate && (
             <div className="flex justify-end w-full">
-                <Button variant="secondary" onClick={onNavigate}>
+                <Button size="sm" variant="secondary" onClick={onNavigate}>
                     <ArrowUpCircle className="mr-2 h-4 w-4" />
-                    Volver al inicio
+                    Ir al inicio
                 </Button>
             </div>
           )}

@@ -149,15 +149,15 @@ export default function ScheduleCard({
 
                 <div className="flex justify-end gap-2 pt-4">
                     {onNavigateToStandings && !isChampionship && (
-                        <Button variant="outline" onClick={onNavigateToStandings}>
+                        <Button size="sm" variant="secondary" onClick={onNavigateToStandings}>
                             <BarChart3 className="mr-2 h-4 w-4" />
                             Ir a posiciones
                         </Button>
                     )}
                     {onNavigate && (
-                        <Button variant="secondary" onClick={onNavigate}>
+                        <Button size="sm" variant="secondary" onClick={onNavigate}>
                             <ArrowUpCircle className="mr-2 h-4 w-4" />
-                            Volver al inicio
+                            Ir al inicio
                         </Button>
                     )}
                 </div>

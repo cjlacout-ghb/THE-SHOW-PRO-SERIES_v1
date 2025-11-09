@@ -1,7 +1,14 @@
 
+export type Player = {
+  id: number;
+  name: string;
+  number: number;
+};
+
 export type Team = {
   id: number;
   name: string;
+  players: Player[];
 };
 
 export type Game = {

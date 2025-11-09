@@ -14,12 +14,12 @@ import Confetti from "react-confetti";
 import Image from "next/image";
 
 const initialTeams: Team[] = [
-  { id: 1, name: "ACCIN VORTEX (ARG)" },
-  { id: 2, name: "CACIQUES BY SWING (CHI)" },
-  { id: 3, name: "CITY PAN (CHI)" },
-  { id: 4, name: "MAYO'S (MEX)" },
-  { id: 5, name: "SOUTH ARGENTINA (ARG)" },
-  { id: 6, name: "TEAM FINCA JUJURE (VEN)" },
+  { id: 1, name: "ACCIN VORTEX (ARG)", players: [] },
+  { id: 2, name: "CACIQUES BY SWING (CHI)", players: [] },
+  { id: 3, name: "CITY PAN (CHI)", players: [] },
+  { id: 4, name: "MAYO'S (MEX)", players: [] },
+  { id: 5, name: "SOUTH ARGENTINA (ARG)", players: [] },
+  { id: 6, name: "TEAM FINCA JUJURE (VEN)", players: [] },
 ];
 
 const createInitialGames = (): Game[] => {

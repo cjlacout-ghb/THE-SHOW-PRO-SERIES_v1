@@ -2,8 +2,13 @@
 "use client";
 
 import type { Team } from "@/lib/types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 type TeamSetupProps = {
   teams: Team[];
@@ -16,17 +21,28 @@ export default function TeamSetup({ teams }: TeamSetupProps) {
         <CardTitle>Equipos Participantes</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <Accordion type="single" collapsible className="w-full">
           {teams.map((team) => (
-            <Button
-              key={team.id}
-              variant="outline"
-              className="w-full justify-start text-left h-auto"
-            >
-              {team.name}
-            </Button>
+            <AccordionItem value={`item-${team.id}`} key={team.id}>
+              <AccordionTrigger>{team.name}</AccordionTrigger>
+              <AccordionContent>
+                {team.players.length > 0 ? (
+                  <ul className="pl-4 list-disc space-y-1">
+                    {team.players.map((player) => (
+                      <li key={player.id} className="text-sm">
+                        #{player.number} - {player.name}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground pl-4">
+                    El roster de jugadores se cargará pronto.
+                  </p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </CardContent>
     </Card>
   );

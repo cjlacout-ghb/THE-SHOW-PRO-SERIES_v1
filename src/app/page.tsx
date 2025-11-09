@@ -66,11 +66,26 @@ const createInitialGames = (): Game[] => {
     ];
 
     return gameData.map(game => {
+        const baseGame = {
+            ...game,
+            score1: "",
+            hits1: "",
+            errors1: "",
+            score2: "",
+            hits2: "",
+            errors2: "",
+            innings: Array(7).fill(0).map(() => ["", ""]),
+        };
+
         if (game.id === 1) {
             return {
-                ...game,
+                ...baseGame,
                 score1: "8",
+                hits1: "10",
+                errors1: "1",
                 score2: "9",
+                hits2: "11",
+                errors2: "0",
                 innings: [
                     ["1", "2"],
                     ["1", "0"],
@@ -85,9 +100,13 @@ const createInitialGames = (): Game[] => {
         }
         if (game.id === 2) {
             return {
-                ...game,
+                ...baseGame,
                 score1: "5",
+                hits1: "7",
+                errors1: "2",
                 score2: "7",
+                hits2: "9",
+                errors2: "1",
                 innings: [
                     ["1", "0"],
                     ["0", "0"],
@@ -99,12 +118,7 @@ const createInitialGames = (): Game[] => {
                 ],
             };
         }
-        return {
-            ...game,
-            score1: "",
-            score2: "",
-            innings: Array(7).fill(0).map(() => ["", ""]),
-        };
+        return baseGame;
     });
 };
 
@@ -112,8 +126,12 @@ const initialChampionshipGame: Game = {
   id: 16,
   team1Id: "",
   score1: "",
+  hits1: "",
+  errors1: "",
   team2Id: "",
   score2: "",
+  hits2: "",
+  errors2: "",
   day: "DÍA 4: Sábado, 21 de marzo",
   time: "21:00",
   innings: Array(7).fill(0).map(() => ["", ""]),
@@ -165,7 +183,9 @@ export default function Home() {
       const newGames = prevState.map((game: Game) =>
         game.id === gameId ? { ...game, [field]: value } : game
       );
-      calculateStandings(newGames);
+      if (field === 'score1' || field === 'score2') {
+        calculateStandings(newGames);
+      }
       return newGames;
     });
   };

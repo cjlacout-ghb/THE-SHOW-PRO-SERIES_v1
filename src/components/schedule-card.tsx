@@ -90,8 +90,13 @@ export default function ScheduleCard({
                   </Label>
                   <span className="text-xs text-muted-foreground text-right">Estadio Mundialista ‘Ing Nafaldo Cargnel’</span>
                 </div>
-                
-                <div className="grid grid-cols-[1fr_4rem] gap-x-4 gap-y-2 items-center">
+
+                <div className="grid grid-cols-[1fr_4rem_4rem_4rem] gap-x-2 gap-y-2 items-center">
+                    <div className="font-semibold">EQUIPO</div>
+                    <div className="text-center font-semibold">R</div>
+                    <div className="text-center font-semibold">H</div>
+                    <div className="text-center font-semibold">E</div>
+
                     <div className={cn(
                         "p-2 text-sm rounded-md bg-muted min-h-[40px] flex items-center justify-center text-center",
                         team1Wins && "text-primary font-bold border border-primary"
@@ -99,6 +104,8 @@ export default function ScheduleCard({
                         {getTeamPlaceholder(game, 1)}
                     </div>
                     <Input type="number" readOnly value={game.score1} className={cn("font-bold text-lg text-center", team1Wins && "text-primary border-primary")} placeholder="R"/>
+                    <Input type="number" value={game.hits1} onChange={(e) => onGameChange(game.id, 'hits1', e.target.value)} className="text-center" placeholder="H"/>
+                    <Input type="number" value={game.errors1} onChange={(e) => onGameChange(game.id, 'errors1', e.target.value)} className="text-center" placeholder="E"/>
                     
                     <div className={cn(
                         "p-2 text-sm rounded-md bg-muted min-h-[40px] flex items-center justify-center text-center",
@@ -107,6 +114,8 @@ export default function ScheduleCard({
                         {getTeamPlaceholder(game, 2)}
                     </div>
                     <Input type="number" readOnly value={game.score2} className={cn("font-bold text-lg text-center", team2Wins && "text-primary border-primary")} placeholder="R"/>
+                    <Input type="number" value={game.hits2} onChange={(e) => onGameChange(game.id, 'hits2', e.target.value)} className="text-center" placeholder="H"/>
+                    <Input type="number" value={game.errors2} onChange={(e) => onGameChange(game.id, 'errors2', e.target.value)} className="text-center" placeholder="E"/>
                 </div>
                 
                 <Separator />

@@ -579,19 +579,17 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="ataque" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3">
+                        <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="ataque">Ataque</TabsTrigger>
                             <TabsTrigger value="pitcheo">Pitcheo</TabsTrigger>
-                            <TabsTrigger value="defensa">Defensa</TabsTrigger>
                         </TabsList>
                         <TabsContent value="ataque">
-                            <p className="text-muted-foreground mt-4">Esta sección se encuentra en desarrollo.</p>
+                            <p className="text-sm text-muted-foreground mt-4">(min 2.1 PA/G)</p>
+                            <p className="text-muted-foreground mt-2">Esta sección se encuentra en desarrollo.</p>
                         </TabsContent>
                         <TabsContent value="pitcheo">
-                            <p className="text-muted-foreground mt-4">Esta sección se encuentra en desarrollo.</p>
-                        </TabsContent>
-                        <TabsContent value="defensa">
-                            <p className="text-muted-foreground mt-4">Esta sección se encuentra en desarrollo.</p>
+                            <p className="text-sm text-muted-foreground mt-4">(min 2.3 IP/G)</p>
+                            <p className="text-muted-foreground mt-2">Esta sección se encuentra en desarrollo.</p>
                         </TabsContent>
                     </Tabs>
                 </CardContent>
@@ -628,7 +626,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-    
-    

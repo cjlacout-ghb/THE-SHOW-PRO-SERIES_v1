@@ -531,19 +531,19 @@ export default function Home() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(teamRosterRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(teamRosterRef)}>
                 <Users className="mr-2 h-5 w-5" />
                 Equipos y Jugadores
             </Button>
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(scheduleRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(scheduleRef)}>
                 <CalendarDays className="mr-2 h-5 w-5" />
                 Partidos y Resultados
             </Button>
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(standingsRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(standingsRef)}>
                 <BarChart3 className="mr-2 h-5 w-5" />
                 Tabla de Posiciones
             </Button>
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(statisticsRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(statisticsRef)}>
                 <Award className="mr-2 h-5 w-5" />
                 Panel de Líderes
             </Button>

@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { Team, Game, Standing, Player } from "@/lib/types";
-import { TrophyIcon, CalendarDays, Users, BarChart3, ArrowUpCircle, Award } from "lucide-react";
+import { TrophyIcon } from "lucide-react";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -532,19 +532,15 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(teamRosterRef)}>
-                <Users className="mr-2 h-5 w-5" />
                 Equipos y Jugadores
             </Button>
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(scheduleRef)}>
-                <CalendarDays className="mr-2 h-5 w-5" />
                 Partidos y Resultados
             </Button>
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(standingsRef)}>
-                <BarChart3 className="mr-2 h-5 w-5" />
                 Tabla de Posiciones
             </Button>
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground justify-center" onClick={() => handleScrollTo(statisticsRef)}>
-                <Award className="mr-2 h-5 w-5" />
                 Panel de Líderes
             </Button>
         </div>
@@ -562,16 +558,6 @@ export default function Home() {
                 onNavigate={handleReturnToTop}
               />
             </div>
-            <div ref={statisticsRef}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Panel de Líderes (Statistics)</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Esta sección se encuentra en desarrollo.</p>
-                </CardContent>
-              </Card>
-            </div>
             {champion && (
               <div ref={championCardRef}>
                 <Card className="bg-card border-primary ring-2 ring-primary shadow-lg animate-in fade-in-50">
@@ -585,6 +571,16 @@ export default function Home() {
                 </Card>
               </div>
             )}
+            <div ref={statisticsRef}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Panel de Líderes (Statistics)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">Esta sección se encuentra en desarrollo.</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
           <div className="xl:col-span-3 space-y-8">
             <div ref={scheduleRef}>
@@ -616,3 +612,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

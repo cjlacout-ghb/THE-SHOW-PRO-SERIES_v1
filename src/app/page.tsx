@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { Team, Game, Standing, Player } from "@/lib/types";
-import { TrophyIcon, CalendarDays, Users, BarChart3, ArrowUpCircle } from "lucide-react";
+import { TrophyIcon, CalendarDays, Users, BarChart3, ArrowUpCircle, Award } from "lucide-react";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -170,6 +170,7 @@ export default function Home() {
   const teamRosterRef = useRef<HTMLDivElement>(null);
   const scheduleRef = useRef<HTMLDivElement>(null);
   const standingsRef = useRef<HTMLDivElement>(null);
+  const statisticsRef = useRef<HTMLDivElement>(null);
   const championCardRef = useRef<HTMLDivElement>(null);
   
   const [confettiSize, setConfettiSize] = useState({ width: 0, height: 0, top: 0, left: 0 });
@@ -529,7 +530,7 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(teamRosterRef)}>
                 <Users className="mr-2 h-5 w-5" />
                 Equipos y Jugadores
@@ -541,6 +542,10 @@ export default function Home() {
             <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(standingsRef)}>
                 <BarChart3 className="mr-2 h-5 w-5" />
                 Tabla de Posiciones
+            </Button>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(statisticsRef)}>
+                <Award className="mr-2 h-5 w-5" />
+                Panel de Líderes
             </Button>
         </div>
 
@@ -556,6 +561,16 @@ export default function Home() {
                 standings={standings}
                 onNavigate={handleReturnToTop}
               />
+            </div>
+            <div ref={statisticsRef}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Panel de Líderes (Statistics)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">Esta sección se encuentra en desarrollo.</p>
+                </CardContent>
+              </Card>
             </div>
             {champion && (
               <div ref={championCardRef}>
@@ -601,5 +616,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

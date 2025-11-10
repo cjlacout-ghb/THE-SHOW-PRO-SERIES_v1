@@ -25,7 +25,7 @@ const accinVortexPlayers: Player[] = [
     { id: 8, number: 8, name: "FEDERICO OLHEISER", role: "INFIELDER", placeOfBirth: "ARGENTINA" },
     { id: 9, number: 10, name: "FRANCO ORTELLADO", role: "INFIELDER", placeOfBirth: "ARGENTINA" },
     { id: 10, number: 5, name: "FELIPE MUÑOZ", role: "INFIELDER", placeOfBirth: "ARGENTINA" },
-    { id: 11, number: 66, name: "NAHIM BRAHIM", role: "OUTFIELDER", placeOfBirth: "ARGENTINA" },
+    { id: 11, number: 66, name: "NAHIM BRAHIM", role: "OUTFIELDER", placeOfBirth: "ARGENTina" },
     { id: 12, number: 7, name: "JUNIOR GUAPE", role: "OUTFIELDER", placeOfBirth: "ARGENTINA" },
     { id: 13, number: 8, name: "LAUTARO FERRARA", role: "OUTFIELDER", placeOfBirth: "ARGENTINA" },
     { id: 14, number: 13, name: "MARCOS PORCO", role: "OUTFIELDER", placeOfBirth: "ARGENTINA" },
@@ -630,4 +630,5 @@ export default function Home() {
 }
 
 
+    
     

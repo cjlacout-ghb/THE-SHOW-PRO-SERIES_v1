@@ -118,6 +118,26 @@ const createInitialGames = (): Game[] => {
                 ],
             };
         }
+        if (game.id === 3) {
+            return {
+                ...baseGame,
+                score1: "3",
+                hits1: "3",
+                errors1: "3",
+                score2: "4",
+                hits2: "4",
+                errors2: "4",
+                innings: [
+                    ["1", "0"],
+                    ["0", "0"],
+                    ["1", "0"],
+                    ["1", "0"],
+                    ["0", "0"],
+                    ["0", "4"],
+                    ["0", "X"],
+                ],
+            };
+        }
         return baseGame;
     });
 };

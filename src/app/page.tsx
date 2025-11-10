@@ -157,6 +157,7 @@ export default function Home() {
   const { toast } = useToast();
 
   const handleScrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+    setOpenAccordion(undefined);
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   
@@ -440,7 +441,7 @@ export default function Home() {
   
   useEffect(() => {
     calculateStandings(preliminaryGames);
-  }, [teams, calculateStandings]);
+  }, [teams, preliminaryGames, calculateStandings]);
   
   const handleSaveChampionship = (finalGame: Game) => {
     const { team1Id, team2Id, score1, score2 } = finalGame;
@@ -509,15 +510,15 @@ export default function Home() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90" onClick={() => handleScrollTo(teamRosterRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(teamRosterRef)}>
                 <Users className="mr-2 h-5 w-5" />
                 Equipos y Jugadores
             </Button>
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90" onClick={() => handleScrollTo(scheduleRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(scheduleRef)}>
                 <CalendarDays className="mr-2 h-5 w-5" />
                 Partidos y Resultados
             </Button>
-            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90" onClick={() => handleScrollTo(standingsRef)}>
+            <Button size="lg" variant="default" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleScrollTo(standingsRef)}>
                 <BarChart3 className="mr-2 h-5 w-5" />
                 Tabla de Posiciones
             </Button>
@@ -580,3 +581,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

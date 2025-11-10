@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
-import { ArrowUpCircle } from "lucide-react";
 
 type StandingsTableProps = {
   standings: Standing[];
@@ -99,7 +98,6 @@ export default function StandingsTable({
           {onNavigate && (
             <div className="flex justify-end w-full">
                 <Button size="sm" variant="secondary" onClick={onNavigate}>
-                    <ArrowUpCircle className="mr-2 h-4 w-4" />
                     Ir al inicio
                 </Button>
             </div>
@@ -108,3 +106,5 @@ export default function StandingsTable({
     </Card>
   );
 }
+
+    

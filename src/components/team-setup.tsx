@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "./ui/button";
-import { ArrowUpCircle } from "lucide-react";
 
 type TeamSetupProps = {
   teams: Team[];
@@ -52,11 +51,12 @@ export default function TeamSetup({ teams, openAccordion, setOpenAccordion, onNa
       {onNavigate && (
         <CardFooter className="flex justify-end w-full">
             <Button variant="secondary" onClick={onNavigate}>
-                <ArrowUpCircle className="mr-2 h-4 w-4" />
-                Volver al inicio
+                Ir al inicio
             </Button>
         </CardFooter>
       )}
     </Card>
   );
 }
+
+    

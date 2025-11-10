@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { Team, Game, Standing, Player } from "@/lib/types";
-import { TrophyIcon } from "lucide-react";
+import { TrophyIcon } from "@/components/icons";
 import TeamSetup from "@/components/team-setup";
 import ScheduleCard from "@/components/schedule-card";
 import StandingsTable from "@/components/standings-table";
@@ -629,3 +629,5 @@ export default function Home() {
   );
 }
 
+
+    

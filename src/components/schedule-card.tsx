@@ -16,7 +16,6 @@ import { Fragment } from "react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowUpCircle, BarChart3 } from "lucide-react";
 
 type ScheduleCardProps = {
   title: string;
@@ -159,13 +158,11 @@ export default function ScheduleCard({
                 <div className="flex justify-end gap-2 pt-4">
                     {onNavigateToStandings && !isChampionship && (
                         <Button size="sm" variant="secondary" onClick={onNavigateToStandings}>
-                            <BarChart3 className="mr-2 h-4 w-4" />
                             Ir a posiciones
                         </Button>
                     )}
                     {onNavigate && (
                         <Button size="sm" variant="secondary" onClick={onNavigate}>
-                            <ArrowUpCircle className="mr-2 h-4 w-4" />
                             Ir al inicio
                         </Button>
                     )}
@@ -179,3 +176,5 @@ export default function ScheduleCard({
     </Card>
   );
 }
+
+    

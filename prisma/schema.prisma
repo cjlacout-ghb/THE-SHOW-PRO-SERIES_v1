@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  players   Player[]
+  homeGames Game[]   @relation("HomeTeam")
+  awayGames Game[]   @relation("AwayTeam")
+}
+
+model Player {
+  id           Int    @id @default(autoincrement())
+  number       Int
+  name         String
+  role         String
+  placeOfBirth String
+  teamId       Int
+  team         Team   @relation(fields: [teamId], references: [id])
+}
+
+model Game {
+  id      Int    @id @default(autoincrement())
+  day     String
+  time    String
+
+  team1Id Int
+  team1   Team @relation("HomeTeam", fields: [team1Id], references: [id])
+  score1  Int?
+  hits1   Int?
+  errors1 Int?
+
+  team2Id Int
+  team2   Team @relation("AwayTeam", fields: [team2Id], references: [id])
+  score2  Int?
+  hits2   Int?
+  errors2 Int?
+
+  isChampionship Boolean @default(false)
+
+  // Storing innings as a JSON string since SQLite doesn't support JSON arrays natively
+  // format: [["1", "0"], ["0", "2"], ...]
+  innings String @default("[]") 
+}
